@@ -1,4 +1,5 @@
 # Support code for cem.py
+import pdb
 
 class BinaryActionLinearPolicy(object):
     def __init__(self, theta):
