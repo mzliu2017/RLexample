@@ -16,7 +16,7 @@ from collections import deque
 import gym
 import numpy as np
 import torch
-from competitive_pong import make_envs
+from competitive_rl import make_envs
 
 from core.a2c_trainer import A2CTrainer, a2c_config
 from core.ppo_trainer import PPOTrainer, ppo_config
@@ -66,11 +66,11 @@ parser.add_argument(
 )
 parser.add_argument(
     "--env-id",
-    default="CompetitivePong-v0",
+    default="cPong-v0",
     type=str,
-    help="The environment id, should be in ['CompetitivePong-v0', "
-         "'CartPole-v0', 'CompetitivePongTournament-v0']. "
-         "Default: CompetitivePong-v0"
+    help="The environment id, should be in ['cPong-v0', "
+         "'CartPole-v0', 'cPongTournament-v0']. "
+         "Default: cPong-v0"
 )
 args = parser.parse_args()
 
@@ -85,8 +85,8 @@ def train(args):
     else:
         raise ValueError("args.algo must in [PPO, A2C]")
     config.num_envs = args.num_envs
-    assert args.env_id in ["CompetitivePong-v0", "CartPole-v0",
-                           "CompetitivePongTournament-v0"]
+    print("env_id is ",args.env_id)
+    assert args.env_id in ["cPong-v0","cPongDouble-v0", "CartPole-v0", "cPongTournament-v0"]
 
     # Seed the environments and setup torch
     seed = args.seed
@@ -118,7 +118,7 @@ def train(args):
         resized_dim=config.resized_dim
     )
     test = env_id == "CartPole-v0"
-    tournament = env_id == "CompetitivePongTournament-v0"
+    tournament = env_id == "cPongTournament-v0"
     frame_stack = 4 if not test else 1
     if tournament:
         assert algo == "PPO", "Using PPO in tournament is a good idea, " \
